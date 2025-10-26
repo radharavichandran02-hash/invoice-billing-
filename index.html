@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>InvoiceFlow </title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="brand">IF</div>
+        <div>
+          <div class="brand-text">InvoiceFlow</div>
+          <div class="muted" style="font-size:13px">Billing & Tracking</div>
+        </div>
+      </div>
+      <button id="openNew" class="new-btn">+ New Invoice</button>
+      <div class="menu" role="navigation">
+        <button class="active" data-page="dashboard">Dashboard</button>
+        <button data-page="invoices">Invoices</button>
+        <button data-page="clients">Clients</button>
+        <button data-page="settings">Settings</button>
+      </div>
+      <div class="user">
+        <div class="avatar">RR</div>
+        <div>
+          <div style="font-weight:800">Radha R</div>
+          <div class="muted">radha@example.com</div>
+        </div>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="header">
+        <div>
+          <div class="title" id="pageTitle">Dashboard</div>
+          <div class="sub" id="pageSub">Overview of your invoicing activity</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+        </div>
+      </div>
+      <section id="dashboardPage">
+        <div class="cards">
+          <div class="card">
+            <h4>Total Revenue</h4>
+            <div class="big" id="totalRevenue">$0.00</div>
+            <div class="trend" id="revTrend">—</div>
+          </div>
+          <div class="card">
+            <h4>Outstanding</h4>
+            <div class="big" id="outstanding">$0.00</div>
+            <div class="trend" id="outTrend">—</div>
+          </div>
+          <div class="card">
+            <h4>Paid (This Month)</h4>
+            <div class="big" id="paidMonth">$0.00</div>
+            <div class="trend" id="paidTrend">—</div>
+          </div>
+        </div>
+        <hr>
+        <div class="panel" style="margin-top:16px">
+          <h3 style="margin-top:0">Recent Invoices</h3>
+          <div style="overflow:auto">
+            <table id="recentTable">
+              <thead><tr><th>#</th><th>Client</th><th>Amount</th><th>Due</th><th>Status</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <section id="invoicesPage" style="display:none">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <h2 style="margin:0">Invoices</h2>
+          <div style="display:flex;gap:8px;align-items:center;width:70%">
+            <input id="searchInput" class="search" placeholder="Search invoice id, client or amount..." />
+            <select id="filterClient" style="padding:10px;border-radius:10px;border:1px solid var(--border);">
+              <option value="">All Clients</option>
+            </select>
+            <select id="filterStatus" style="padding:10px;border-radius:10px;border:1px solid var(--border);">
+              <option value="">All Status</option>
+              <option value="paid">Paid</option>
+              <option value="due">Due</option>
+            </select>
+            <button id="newFromInv" class="btn primary" style="min-width:140px">New Invoice</button>
+          </div>
+        </div>
+        <hr>
+        <div class="panel" style="margin-top:16px">
+          <div style="overflow:auto">
+            <table id="invoicesTable">
+              <thead><tr><th>#</th><th>Client</th><th>Created</th><th>Amount</th><th>Due</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div style="margin-top:12px" class="muted">Showing <span id="countInvoices">0</span> invoices</div>
+        </div>
+      </section>
+      <section id="clientsPage" style="display:none">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <h2 style="margin:0">Clients</h2>
+          <button id="addClient" class="btn primary">Add New Client</button>
+        </div>
+        <hr>
+        <div class="panel" style="margin-top:16px">
+          <div id="clientsList"></div>
+        </div>
+      </section>
+      <section id="settingsPage" style="display:none">
+        <div class="panel">
+          <h3 style="margin-top:0">Business & Financial Settings</h3>
+          <div style="display:flex;gap:12px;flex-direction:column">
+            <label style="font-weight:600">Business Name</label>
+            <input id="bizName" placeholder="Your business name" />
+            <label style="font-weight:600">Currency (ISO Code, e.g., USD, EUR)</label>
+            <input id="currency" placeholder="USD" />
+            <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+              <button id="saveSettings" class="btn primary">Save Settings</button>
+            </div>
+          </div>
+        </div>
+        <div class="panel" style="margin-top:20px">
+            <h3 style="margin-top:0">Payment Link Integration</h3>
+            <p class="muted">This is the base URL your clients will use to pay (Demo only).</p>
+            <input id="paymentLinkBase" placeholder="https://pay.example.com/invoice/" value="https://pay.example.com/invoice/" />
+        </div>
+      </section>
+      <footer><div class="muted">Made with — InvoiceFlow </div></footer>
+    </main>
+  </div>
+  <div id="modalRoot" style="display:none"></div>
+  <div class="anim-wrap">
+    <div id="envelope" class="envelope"> <div class="check"></div></div>
+  </div>
+  <div id="toast" class="status-toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
